@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  web:
+    container_name: 'flask_blog_app'
+    build: .
+    command: "flask run --host 0.0.0.0 --port 5000"
+    ports: 
+        - 7000:5000
+    environment: 
+        FLASK_APP: "run.py"
+    depends_on: 
+      - "db"
+  
+  db:
+    image: mysql:5.7
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+      - 3307:3306
+    volumes:
+      - ./mysql/:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: f00007777
+      MYSQL_DATABASE: post_db
+
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080

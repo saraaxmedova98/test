@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h1>Welcome to Home Page<span>|<a href="{{ url_for('new_post') }}"><button class="btn btn-outline-primary">Add New Post</button></a></span></h1>
+
+<div class="content-section">
+    {% for post in posts.items %}
+        <h3>Post Title: {{ post.title }}</h3>
+        <p>{{ post.description }}</p>
+        <hr>
+    {% endfor %}
+    {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+        {% if page_num %}
+            {% if posts.page == page_num %}
+                <a class="btn btn-info mb4-" href="{{ url_for('home_page', page=page_num) }}">{{ page_num }}</a>
+            {% else %}
+                <a class="btn btn-outline-info mb4-" href="{{ url_for('home_page', page=page_num) }}">{{ page_num }}</a>
+            {% endif %}
+        {% else %}    
+            ...
+        {% endif %}
+    {% endfor %}
+</div>
+{% endblock content %}
+
